@@ -69,7 +69,7 @@ A solução simplificada de pedido de comida online é composta por um total de 
 
 O modelo C4 abaixo mostra o contexto geral dessa solução:
 
-![Food Ordering Context](docs/Food Ordering Context.png "Food Ordering Context")
+![Food Ordering Context](docs/food-ordering-context.png "Food Ordering Context")
 
 ## Client:
 Refere-se à aplicação mobible, ou aplicação WEB, ou Client HTTP, ou qualquer outra forma de integração que faça uso de requisições REST para interagir com o backend.
@@ -113,10 +113,10 @@ E quando isso ocorre, o pagamento do pedido necessita de extornado/devolvido.
 O estado `CANCELLED`, como o próprio nome sugere, é um dos possíveis estados finais onde o pedido do cliente deixou de ser `APPROVED` por alguma razão. Ou não foi pago, ou não foi aprovado pelo restaurante, ou ainda foi cancelado pelo próprio cliente.
 
 A imagem abaixo ilustra a máquina de estados dos pedidos:
-![Order state transitions](docs/Order state transitions.png "Order state transitions")
+![Order state transitions](docs/order-state-transitions.png "Order state transitions")
 
 Dentro do fluxo de processamento, a mudança de estado dos pedidos ocorre em pontos e em momentos específicos.
-![Order state transitions](docs/Flow state transitions.png "Flow state transitions")
+![Order state transitions](docs/flow-state-transitions.png "Flow state transitions")
 
 
 # Customer Ordering Flow
@@ -128,7 +128,7 @@ Apesar da aprovação exigir apenas duas etapas, o fato da arquitetura da soluç
 A solução adotada faz uso do padrão SAGA.<br>
 A imagem abaixo ilustra todo o fluxo da transação, que possui no total, 14 passos:
 
-![Food Ordering Flow](docs/Food Ordering Flow.png "Food Ordering Flow")
+![Food Ordering Flow](docs/food-ordering-flow.png "Food Ordering Flow")
 
 - **Step 1: Requisição**: O primeiro passo representa o pedido do cliente submetido através de um requisição REST que, ao chegar no `Order Service` é validado;
 - **Step 2: Persistência**: Estando a solicitação em conformidade, os dados do usuário e do pedido são registrados na base de dados;
