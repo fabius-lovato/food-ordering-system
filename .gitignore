@@ -1,0 +1,46 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### MAVEN ###
+.mvn/
+mvnw
+mvnw.cmd
+
+### STS/Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+packages/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Kafka shared folders ###
+/infrastructure/docker-compose/volumes/kafka/broker-1/*
+/infrastructure/docker-compose/volumes/kafka/broker-2/*
+/infrastructure/docker-compose/volumes/kafka/broker-3/*
+/infrastructure/docker-compose/volumes/zookeeper/data/*
+/infrastructure/docker-compose/volumes/zookeeper/transactions/*
