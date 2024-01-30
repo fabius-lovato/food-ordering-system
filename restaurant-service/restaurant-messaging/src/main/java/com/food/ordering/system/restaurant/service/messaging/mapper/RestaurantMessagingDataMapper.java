@@ -50,10 +50,11 @@ public class RestaurantMessagingDataMapper {
     public RestaurantApprovalRequest
     restaurantApprovalRequestAvroModelToRestaurantApproval(RestaurantApprovalRequestAvroModel
                                                                    restaurantApprovalRequestAvroModel) {
-        UUID sagaId = restaurantApprovalRequestAvroModel.getSagaId();
+        UUID sagaI = restaurantApprovalRequestAvroModel.getSagaId();
+
         return RestaurantApprovalRequest.builder()
                 .id(restaurantApprovalRequestAvroModel.getId().toString())
-                .sagaId(Objects.isNull(sagaId) ? null : sagaId.toString())
+                .sagaId(Objects.isNull(sagaI) ? null : sagaI.toString())
                 .restaurantId(restaurantApprovalRequestAvroModel.getRestaurantId().toString())
                 .orderId(restaurantApprovalRequestAvroModel.getOrderId().toString())
                 .restaurantOrderStatus(RestaurantOrderStatus.valueOf(restaurantApprovalRequestAvroModel
