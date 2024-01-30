@@ -1,6 +1,7 @@
 package com.food.ordering.system.restaurant.service.messaging.mapper;
 
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -49,9 +50,11 @@ public class RestaurantMessagingDataMapper {
     public RestaurantApprovalRequest
     restaurantApprovalRequestAvroModelToRestaurantApproval(RestaurantApprovalRequestAvroModel
                                                                    restaurantApprovalRequestAvroModel) {
+        UUID sagaI = restaurantApprovalRequestAvroModel.getSagaId();
+
         return RestaurantApprovalRequest.builder()
                 .id(restaurantApprovalRequestAvroModel.getId().toString())
-                .sagaId(restaurantApprovalRequestAvroModel.getSagaId().toString())
+                .sagaId(Objects.isNull(sagaI) ? null : sagaI.toString())
                 .restaurantId(restaurantApprovalRequestAvroModel.getRestaurantId().toString())
                 .orderId(restaurantApprovalRequestAvroModel.getOrderId().toString())
                 .restaurantOrderStatus(RestaurantOrderStatus.valueOf(restaurantApprovalRequestAvroModel
