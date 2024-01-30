@@ -12,10 +12,13 @@
         },
         {
             "name": "sagaId",
-            "type": {
-                "type": "string",
-                "logicalType": "uuid"
-            }
+            "type": [
+                "null", 
+                {
+                    "type": "string",
+                    "logicalType": "uuid"
+                }
+            ]
         },
         {
             "name": "customerId",

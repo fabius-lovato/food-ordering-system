@@ -5,17 +5,19 @@
  */
 package com.food.ordering.system.kafka.order.avro.model;
 
-import org.apache.avro.message.BinaryMessageDecoder;
-import org.apache.avro.message.BinaryMessageEncoder;
-import org.apache.avro.message.SchemaStore;
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -3431989201238018220L;
+  private static final long serialVersionUID = 7794690480803720942L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RestaurantApprovalResponseAvroModel\",\"namespace\":\"com.food.ordering.system.kafka.order.avro.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"restaurantId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"orderApprovalStatus\",\"type\":{\"type\":\"enum\",\"name\":\"OrderApprovalStatus\",\"symbols\":[\"APPROVED\",\"REJECTED\"]}},{\"name\":\"failureMessages\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RestaurantApprovalResponseAvroModel\",\"namespace\":\"com.food.ordering.system.kafka.order.avro.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":[\"null\",{\"type\":\"string\",\"logicalType\":\"uuid\"}]},{\"name\":\"restaurantId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"createdAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"orderApprovalStatus\",\"type\":{\"type\":\"enum\",\"name\":\"OrderApprovalStatus\",\"symbols\":[\"APPROVED\",\"REJECTED\"]}},{\"name\":\"failureMessages\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -119,28 +121,28 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
   // Used by DatumWriter.  Applications should not call.
   @Override
   public java.lang.Object get(int field$) {
-    return switch (field$) {
-    case 0 -> id;
-    case 1 -> sagaId;
-    case 2 -> restaurantId;
-    case 3 -> orderId;
-    case 4 -> createdAt;
-    case 5 -> orderApprovalStatus;
-    case 6 -> failureMessages;
-    default -> throw new IndexOutOfBoundsException("Invalid index: " + field$);
-    };
+    switch (field$) {
+    case 0: return id;
+    case 1: return sagaId;
+    case 2: return restaurantId;
+    case 3: return orderId;
+    case 4: return createdAt;
+    case 5: return orderApprovalStatus;
+    case 6: return failureMessages;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    }
   }
 
   private static final org.apache.avro.Conversion<?>[] conversions =
-      {
-  new org.apache.avro.Conversions.UUIDConversion(),
-  new org.apache.avro.Conversions.UUIDConversion(),
-  new org.apache.avro.Conversions.UUIDConversion(),
-  new org.apache.avro.Conversions.UUIDConversion(),
-  new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
-  null,
-  null,
-  null
+      new org.apache.avro.Conversion<?>[] {
+      new org.apache.avro.Conversions.UUIDConversion(),
+      null,
+      new org.apache.avro.Conversions.UUIDConversion(),
+      new org.apache.avro.Conversions.UUIDConversion(),
+      new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
+      null,
+      null,
+      null
   };
 
   @Override
@@ -299,8 +301,9 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
   public static com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel.Builder newBuilder(com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel.Builder other) {
     if (other == null) {
       return new com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel.Builder();
+    } else {
+      return new com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel.Builder(other);
     }
-    return new com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel.Builder(other);
   }
 
   /**
@@ -311,8 +314,9 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
   public static com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel.Builder newBuilder(com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel other) {
     if (other == null) {
       return new com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel.Builder();
+    } else {
+      return new com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel.Builder(other);
     }
-    return new com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel.Builder(other);
   }
 
   /**
@@ -709,7 +713,7 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumWriter<RestaurantApprovalResponseAvroModel>
-    WRITER$ = MODEL$.createDatumWriter(SCHEMA$);
+    WRITER$ = (org.apache.avro.io.DatumWriter<RestaurantApprovalResponseAvroModel>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -718,7 +722,7 @@ public class RestaurantApprovalResponseAvroModel extends org.apache.avro.specifi
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumReader<RestaurantApprovalResponseAvroModel>
-    READER$ = MODEL$.createDatumReader(SCHEMA$);
+    READER$ = (org.apache.avro.io.DatumReader<RestaurantApprovalResponseAvroModel>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {

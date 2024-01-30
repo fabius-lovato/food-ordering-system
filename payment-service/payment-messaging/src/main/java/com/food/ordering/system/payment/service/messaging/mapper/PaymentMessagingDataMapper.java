@@ -1,5 +1,6 @@
 package com.food.ordering.system.payment.service.messaging.mapper;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -59,9 +60,11 @@ public class PaymentMessagingDataMapper {
     }
 
     public PaymentRequest paymentRequestAvroModelToPaymentRequest(PaymentRequestAvroModel paymentRequestAvroModel) {
+        UUID sagaId = paymentRequestAvroModel.getSagaId();
+
         return PaymentRequest.builder()
                 .id(paymentRequestAvroModel.getId().toString())
-                .sagaId(paymentRequestAvroModel.getSagaId().toString())
+                .sagaId(Objects.isNull(sagaId) ? null : sagaId.toString())
                 .customerId(paymentRequestAvroModel.getCustomerId().toString())
                 .orderId(paymentRequestAvroModel.getOrderId().toString())
                 .price(paymentRequestAvroModel.getPrice())
