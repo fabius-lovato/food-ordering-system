@@ -5,9 +5,9 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
-import com.food.ordering.system.domain.exception.DomainException;
 import com.food.ordering.system.domain.valueobject.OrderId;
 import com.food.ordering.system.order.service.domain.entity.Order;
+import com.food.ordering.system.order.service.domain.exception.OrderNotFoundException;
 import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class OrderSagaHelper {
         Optional<Order> orderResponse = orderRepository.findById(new OrderId(UUID.fromString(orderId)));
         if (orderResponse.isEmpty()) {
             log.error("Order with id: {} could not be found!", orderId);
-            throw new DomainException("Order with id: " + orderId + " could not be found!");
+            throw new OrderNotFoundException("Order with id: " + orderId + " could not be found!");
         }
 
         return orderResponse.get();

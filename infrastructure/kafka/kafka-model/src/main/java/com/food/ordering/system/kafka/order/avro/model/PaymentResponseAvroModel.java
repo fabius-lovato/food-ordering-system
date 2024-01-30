@@ -5,12 +5,10 @@
  */
 package com.food.ordering.system.kafka.order.avro.model;
 
-import org.apache.avro.generic.GenericArray;
-import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
-import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.SchemaStore;
+import org.apache.avro.specific.SpecificData;
 
 @org.apache.avro.specific.AvroGenerated
 public class PaymentResponseAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
@@ -128,32 +126,32 @@ public class PaymentResponseAvroModel extends org.apache.avro.specific.SpecificR
   // Used by DatumWriter.  Applications should not call.
   @Override
   public java.lang.Object get(int field$) {
-    switch (field$) {
-    case 0: return id;
-    case 1: return sagaId;
-    case 2: return paymentId;
-    case 3: return customerId;
-    case 4: return orderId;
-    case 5: return price;
-    case 6: return createdAt;
-    case 7: return paymentStatus;
-    case 8: return failureMessages;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
-    }
+    return switch (field$) {
+    case 0 -> id;
+    case 1 -> sagaId;
+    case 2 -> paymentId;
+    case 3 -> customerId;
+    case 4 -> orderId;
+    case 5 -> price;
+    case 6 -> createdAt;
+    case 7 -> paymentStatus;
+    case 8 -> failureMessages;
+    default -> throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    };
   }
 
   private static final org.apache.avro.Conversion<?>[] conversions =
-      new org.apache.avro.Conversion<?>[] {
-      new org.apache.avro.Conversions.UUIDConversion(),
-      null,
-      new org.apache.avro.Conversions.UUIDConversion(),
-      new org.apache.avro.Conversions.UUIDConversion(),
-      new org.apache.avro.Conversions.UUIDConversion(),
-      new org.apache.avro.Conversions.DecimalConversion(),
-      new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
-      null,
-      null,
-      null
+      {
+  new org.apache.avro.Conversions.UUIDConversion(),
+  null,
+  new org.apache.avro.Conversions.UUIDConversion(),
+  new org.apache.avro.Conversions.UUIDConversion(),
+  new org.apache.avro.Conversions.UUIDConversion(),
+  new org.apache.avro.Conversions.DecimalConversion(),
+  new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
+  null,
+  null,
+  null
   };
 
   @Override
@@ -348,9 +346,8 @@ public class PaymentResponseAvroModel extends org.apache.avro.specific.SpecificR
   public static com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel.Builder newBuilder(com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel.Builder other) {
     if (other == null) {
       return new com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel.Builder();
-    } else {
-      return new com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel.Builder(other);
     }
+    return new com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel.Builder(other);
   }
 
   /**
@@ -361,9 +358,8 @@ public class PaymentResponseAvroModel extends org.apache.avro.specific.SpecificR
   public static com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel.Builder newBuilder(com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel other) {
     if (other == null) {
       return new com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel.Builder();
-    } else {
-      return new com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel.Builder(other);
     }
+    return new com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel.Builder(other);
   }
 
   /**
@@ -860,7 +856,7 @@ public class PaymentResponseAvroModel extends org.apache.avro.specific.SpecificR
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumWriter<PaymentResponseAvroModel>
-    WRITER$ = (org.apache.avro.io.DatumWriter<PaymentResponseAvroModel>)MODEL$.createDatumWriter(SCHEMA$);
+    WRITER$ = MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -869,7 +865,7 @@ public class PaymentResponseAvroModel extends org.apache.avro.specific.SpecificR
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumReader<PaymentResponseAvroModel>
-    READER$ = (org.apache.avro.io.DatumReader<PaymentResponseAvroModel>)MODEL$.createDatumReader(SCHEMA$);
+    READER$ = MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {

@@ -5,12 +5,10 @@
  */
 package com.food.ordering.system.kafka.order.avro.model;
 
-import org.apache.avro.generic.GenericArray;
-import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
-import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.SchemaStore;
+import org.apache.avro.specific.SpecificData;
 
 @org.apache.avro.specific.AvroGenerated
 public class Product extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
@@ -102,16 +100,15 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
   // Used by DatumWriter.  Applications should not call.
   @Override
   public java.lang.Object get(int field$) {
-    switch (field$) {
-    case 0: return id;
-    case 1: return quantity;
-    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
-    }
+    return switch (field$) {
+    case 0 -> id;
+    case 1 -> quantity;
+    default -> throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    };
   }
 
   // Used by DatumReader.  Applications should not call.
   @Override
-  @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: id = value$ != null ? value$.toString() : null; break;
@@ -170,9 +167,8 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
   public static com.food.ordering.system.kafka.order.avro.model.Product.Builder newBuilder(com.food.ordering.system.kafka.order.avro.model.Product.Builder other) {
     if (other == null) {
       return new com.food.ordering.system.kafka.order.avro.model.Product.Builder();
-    } else {
-      return new com.food.ordering.system.kafka.order.avro.model.Product.Builder(other);
     }
+    return new com.food.ordering.system.kafka.order.avro.model.Product.Builder(other);
   }
 
   /**
@@ -183,9 +179,8 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
   public static com.food.ordering.system.kafka.order.avro.model.Product.Builder newBuilder(com.food.ordering.system.kafka.order.avro.model.Product other) {
     if (other == null) {
       return new com.food.ordering.system.kafka.order.avro.model.Product.Builder();
-    } else {
-      return new com.food.ordering.system.kafka.order.avro.model.Product.Builder(other);
     }
+    return new com.food.ordering.system.kafka.order.avro.model.Product.Builder(other);
   }
 
   /**
@@ -315,7 +310,6 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Product build() {
       try {
         Product record = new Product();
@@ -332,7 +326,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumWriter<Product>
-    WRITER$ = (org.apache.avro.io.DatumWriter<Product>)MODEL$.createDatumWriter(SCHEMA$);
+    WRITER$ = MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -341,7 +335,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumReader<Product>
-    READER$ = (org.apache.avro.io.DatumReader<Product>)MODEL$.createDatumReader(SCHEMA$);
+    READER$ = MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
