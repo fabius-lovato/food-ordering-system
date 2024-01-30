@@ -1,5 +1,6 @@
 package com.food.ordering.system.order.service.messaging.mapper;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -69,8 +70,10 @@ public class OrderMessagingDataMapper {
     }
 
     public PaymentResponse paymentResponseAvroModelToPaymentResponse(PaymentResponseAvroModel paymentResponseAvroModel) {
+        UUID sagaId = paymentResponseAvroModel.getSagaId();
         return PaymentResponse.builder()
-                .id(paymentResponseAvroModel.getId().toString()).sagaId(paymentResponseAvroModel.getSagaId().toString())
+                .id(paymentResponseAvroModel.getId().toString())
+                .sagaId(Objects.isNull(sagaId) ? null : sagaId.toString())
                 .paymentId(paymentResponseAvroModel.getPaymentId().toString())
                 .customerId(paymentResponseAvroModel.getCustomerId().toString())
                 .orderId(paymentResponseAvroModel.getOrderId().toString())
@@ -83,11 +86,12 @@ public class OrderMessagingDataMapper {
     }
 
     public RestaurantApprovalResponse approvalResponseAvroModelToApprovalResponse(
-            RestaurantApprovalResponseAvroModel
-                                                        restaurantApprovalResponseAvroModel) {
+            RestaurantApprovalResponseAvroModel restaurantApprovalResponseAvroModel
+    ) {
+        UUID sagaId = restaurantApprovalResponseAvroModel.getSagaId();
         return RestaurantApprovalResponse.builder()
                 .id(restaurantApprovalResponseAvroModel.getId().toString())
-                .sagaId(restaurantApprovalResponseAvroModel.getSagaId().toString())
+                .sagaId(Objects.isNull(sagaId) ? null : sagaId.toString())
                 .restaurantId(restaurantApprovalResponseAvroModel.getRestaurantId().toString())
                 .orderId(restaurantApprovalResponseAvroModel.getOrderId().toString())
                 .createdAt(restaurantApprovalResponseAvroModel.getCreatedAt())

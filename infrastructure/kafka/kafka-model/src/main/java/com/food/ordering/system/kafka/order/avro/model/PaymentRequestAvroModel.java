@@ -5,17 +5,19 @@
  */
 package com.food.ordering.system.kafka.order.avro.model;
 
-import org.apache.avro.message.BinaryMessageDecoder;
-import org.apache.avro.message.BinaryMessageEncoder;
-import org.apache.avro.message.SchemaStore;
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class PaymentRequestAvroModel extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 1425163749928760031L;
+  private static final long serialVersionUID = -1583473036266463004L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PaymentRequestAvroModel\",\"namespace\":\"com.food.ordering.system.kafka.order.avro.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"customerId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"price\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"createdAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"paymentOrderStatus\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentOrderStatus\",\"symbols\":[\"PENDING\",\"CANCELLED\"]}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PaymentRequestAvroModel\",\"namespace\":\"com.food.ordering.system.kafka.order.avro.model\",\"fields\":[{\"name\":\"id\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"sagaId\",\"type\":[\"null\",{\"type\":\"string\",\"logicalType\":\"uuid\"}]},{\"name\":\"customerId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"orderId\",\"type\":{\"type\":\"string\",\"logicalType\":\"uuid\"}},{\"name\":\"price\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":10,\"scale\":2}},{\"name\":\"createdAt\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"paymentOrderStatus\",\"type\":{\"type\":\"enum\",\"name\":\"PaymentOrderStatus\",\"symbols\":[\"PENDING\",\"CANCELLED\"]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -120,28 +122,28 @@ public class PaymentRequestAvroModel extends org.apache.avro.specific.SpecificRe
   // Used by DatumWriter.  Applications should not call.
   @Override
   public java.lang.Object get(int field$) {
-    return switch (field$) {
-    case 0 -> id;
-    case 1 -> sagaId;
-    case 2 -> customerId;
-    case 3 -> orderId;
-    case 4 -> price;
-    case 5 -> createdAt;
-    case 6 -> paymentOrderStatus;
-    default -> throw new IndexOutOfBoundsException("Invalid index: " + field$);
-    };
+    switch (field$) {
+    case 0: return id;
+    case 1: return sagaId;
+    case 2: return customerId;
+    case 3: return orderId;
+    case 4: return price;
+    case 5: return createdAt;
+    case 6: return paymentOrderStatus;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    }
   }
 
   private static final org.apache.avro.Conversion<?>[] conversions =
-      {
-  new org.apache.avro.Conversions.UUIDConversion(),
-  new org.apache.avro.Conversions.UUIDConversion(),
-  new org.apache.avro.Conversions.UUIDConversion(),
-  new org.apache.avro.Conversions.UUIDConversion(),
-  new org.apache.avro.Conversions.DecimalConversion(),
-  new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
-  null,
-  null
+      new org.apache.avro.Conversion<?>[] {
+      new org.apache.avro.Conversions.UUIDConversion(),
+      null,
+      new org.apache.avro.Conversions.UUIDConversion(),
+      new org.apache.avro.Conversions.UUIDConversion(),
+      new org.apache.avro.Conversions.DecimalConversion(),
+      new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
+      null,
+      null
   };
 
   @Override
@@ -151,6 +153,7 @@ public class PaymentRequestAvroModel extends org.apache.avro.specific.SpecificRe
 
   // Used by DatumReader.  Applications should not call.
   @Override
+  @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: id = (java.util.UUID)value$; break;
@@ -299,8 +302,9 @@ public class PaymentRequestAvroModel extends org.apache.avro.specific.SpecificRe
   public static com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel.Builder newBuilder(com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel.Builder other) {
     if (other == null) {
       return new com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel.Builder();
+    } else {
+      return new com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel.Builder(other);
     }
-    return new com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel.Builder(other);
   }
 
   /**
@@ -311,8 +315,9 @@ public class PaymentRequestAvroModel extends org.apache.avro.specific.SpecificRe
   public static com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel.Builder newBuilder(com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel other) {
     if (other == null) {
       return new com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel.Builder();
+    } else {
+      return new com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel.Builder(other);
     }
-    return new com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel.Builder(other);
   }
 
   /**
@@ -687,6 +692,7 @@ public class PaymentRequestAvroModel extends org.apache.avro.specific.SpecificRe
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public PaymentRequestAvroModel build() {
       try {
         PaymentRequestAvroModel record = new PaymentRequestAvroModel();
@@ -708,7 +714,7 @@ public class PaymentRequestAvroModel extends org.apache.avro.specific.SpecificRe
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumWriter<PaymentRequestAvroModel>
-    WRITER$ = MODEL$.createDatumWriter(SCHEMA$);
+    WRITER$ = (org.apache.avro.io.DatumWriter<PaymentRequestAvroModel>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -717,7 +723,7 @@ public class PaymentRequestAvroModel extends org.apache.avro.specific.SpecificRe
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumReader<PaymentRequestAvroModel>
-    READER$ = MODEL$.createDatumReader(SCHEMA$);
+    READER$ = (org.apache.avro.io.DatumReader<PaymentRequestAvroModel>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
