@@ -11,7 +11,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>kafka</module>
         <module>saga</module>
+        <module>outbox</module>
+        <module>kafka</module>
     </modules>
 </project>
