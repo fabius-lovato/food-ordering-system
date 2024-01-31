@@ -1,7 +1,10 @@
 package com.food.ordering.system.restaurant.service.messaging.listener.kafka;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.postgresql.util.PSQLState;
+import org.springframework.dao.DataAccessException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -10,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import com.food.ordering.system.kafka.consumer.KafkaConsumer;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel;
+import com.food.ordering.system.restaurant.service.domain.exception.RestaurantApplicationServiceException;
+import com.food.ordering.system.restaurant.service.domain.exception.RestaurantNotFoundException;
 import com.food.ordering.system.restaurant.service.domain.ports.input.message.listener.RestaurantApprovalRequestMessageListener;
 import com.food.ordering.system.restaurant.service.messaging.mapper.RestaurantMessagingDataMapper;
 
@@ -22,10 +27,10 @@ public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<Res
     private final RestaurantApprovalRequestMessageListener restaurantApprovalRequestMessageListener;
     private final RestaurantMessagingDataMapper restaurantMessagingDataMapper;
 
-    public RestaurantApprovalRequestKafkaListener(RestaurantApprovalRequestMessageListener
-                                                          restaurantApprovalRequestMessageListener,
-                                                  RestaurantMessagingDataMapper
-                                                          restaurantMessagingDataMapper) {
+    public RestaurantApprovalRequestKafkaListener(
+            RestaurantApprovalRequestMessageListener restaurantApprovalRequestMessageListener,
+            RestaurantMessagingDataMapper restaurantMessagingDataMapper
+    ) {
         this.restaurantApprovalRequestMessageListener = restaurantApprovalRequestMessageListener;
         this.restaurantMessagingDataMapper = restaurantMessagingDataMapper;
     }
@@ -45,9 +50,28 @@ public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<Res
                 offsets.toString());
 
         messages.forEach(restaurantApprovalRequestAvroModel -> {
-            log.info("Processing order approval for order id: {}", restaurantApprovalRequestAvroModel.getOrderId());
-            restaurantApprovalRequestMessageListener.approveOrder(restaurantMessagingDataMapper.
-                    restaurantApprovalRequestAvroModelToRestaurantApproval(restaurantApprovalRequestAvroModel));
+            try {
+                log.info("Processing order approval for order id: {}", restaurantApprovalRequestAvroModel.getOrderId());
+
+                restaurantApprovalRequestMessageListener.approveOrder(
+                        restaurantMessagingDataMapper.restaurantApprovalRequestAvroModelToRestaurantApproval(restaurantApprovalRequestAvroModel));
+            } catch (DataAccessException e) {
+                SQLException sqlException = (SQLException) e.getRootCause();
+
+                if ((sqlException == null) || !PSQLState.UNIQUE_VIOLATION.getState().equals(sqlException.getSQLState())) {
+                    throw new RestaurantApplicationServiceException(
+                            "Throwing DataAccessException in" + " RestaurantApprovalRequestKafkaListener: " + e.getMessage(), e);
+                }
+                // NO-OP for unique constraint exception
+                log.error("Caught unique constraint exception with sql state: {} in RestaurantApprovalRequestKafkaListener for order id: {}",
+                        sqlException.getSQLState(),
+                        restaurantApprovalRequestAvroModel.getOrderId());
+            } catch (RestaurantNotFoundException e) {
+                // NO-OP for RestaurantNotFoundException
+                log.error("No restaurant found for restaurant id: {}, and order id: {}", 
+                        restaurantApprovalRequestAvroModel.getRestaurantId(),
+                        restaurantApprovalRequestAvroModel.getOrderId());
+            }
         });
     }
 
