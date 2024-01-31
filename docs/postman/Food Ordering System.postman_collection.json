@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "c16cde10-fc9e-445e-85e2-35e7166a6ac0",
+		"name": "Food Ordering System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6697772"
+	},
+	"item": [
+		{
+			"name": "Create Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"let jsonData = pm.response.json();\r",
+							"let orderTrackingId = jsonData['orderTrackingId'];\r",
+							"\r",
+							"pm.collectionVariables.set('ORDER_TRACKING_ID', orderTrackingId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerId\": \"d215b5f8-0249-4dc5-89a3-51fd148cfb41\",\r\n    \"restaurantId\": \"d215b5f8-0249-4dc5-89a3-51fd148cfb45\",\r\n    \"address\": {\r\n        \"street\": \"Rua ...\",\r\n        \"postalCode\": \"91280232\",\r\n        \"city\": \"Porto Alegre\"\r\n    },\r\n    \"price\": 200.00,\r\n    \"items\": [\r\n        {\r\n            \"productId\": \"d215b5f8-0249-4dc5-89a3-51fd148cfb47\",\r\n            \"quantity\": 2,\r\n            \"price\": 25.00,\r\n            \"subTotal\": 50.00\r\n        },\r\n        {\r\n            \"productId\": \"d215b5f8-0249-4dc5-89a3-51fd148cfb48\",\r\n            \"quantity\": 3,\r\n            \"price\": 50.00,\r\n            \"subTotal\": 150.00\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8181/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/orders/{{ORDER_TRACKING_ID}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"orders",
+						"{{ORDER_TRACKING_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerId\": \"d215b5f8-0249-4dc5-89a3-51fd148cfb41\",\r\n    \"username\": \"fabius\",\r\n    \"firstName\": \"Fabius\",\r\n    \"lastName\": \"Lovato\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8184/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8184",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "ORDER_TRACKING_ID",
+			"value": ""
+		}
+	]
+}
