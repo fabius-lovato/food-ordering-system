@@ -43,6 +43,7 @@ Cada componente da arquitetura é projetado para desempenhar um papel específic
 - [Apache Kafka](https://kafka.apache.org/)
 - Docker (opcional)
 - Docker-Compose (opcional)
+- [Postman](https://www.postman.com/) (opcional)
 - [GraphViz](https://graphviz.org/download/) (opcional)
 
 ## Dependencies
@@ -265,4 +266,8 @@ O uso do `GraphViz` é opcional, porém ajuda a criar uma visualização da depe
 O comando acima irá gerar uma imagem semelhante à essa:
 
 ![GraphViz](docs/graphviz-dependency-view.png "Dependency Graph")
+
+## Using Postman as HTTP client
+
+A pasta `/docs/postman/` contém uma collection com requisições REST pré-configuradas que podem ser usadas para facilitar as atividades de desenvolvimento e teste.
 

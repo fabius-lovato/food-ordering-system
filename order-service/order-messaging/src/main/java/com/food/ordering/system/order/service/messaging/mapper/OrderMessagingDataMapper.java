@@ -6,12 +6,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel;
 import com.food.ordering.system.kafka.order.avro.model.PaymentOrderStatus;
 import com.food.ordering.system.kafka.order.avro.model.PaymentRequestAvroModel;
 import com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus;
+import com.food.ordering.system.order.service.domain.dto.message.CustomerModel;
 import com.food.ordering.system.order.service.domain.dto.message.PaymentResponse;
 import com.food.ordering.system.order.service.domain.dto.message.RestaurantApprovalResponse;
 import com.food.ordering.system.order.service.domain.outbox.model.approval.OrderApprovalEventPayload;
@@ -84,4 +86,12 @@ public class OrderMessagingDataMapper {
                 .build();
     }
 
+    public CustomerModel customerAvroModeltoCustomerModel(CustomerAvroModel customerAvroModel) {
+        return CustomerModel.builder()
+                .id(customerAvroModel.getId().toString())
+                .username(customerAvroModel.getUsername())
+                .firstName(customerAvroModel.getFirstName())
+                .lastName(customerAvroModel.getLastName())
+                .build();
+    }
 }
