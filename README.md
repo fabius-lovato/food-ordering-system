@@ -28,7 +28,7 @@ O `Food Ordering System` é uma solução simplificada de pedidos de comida onli
    Gerencia a confirmação dos pedidos por parte dos restaurantes e mantém os clientes informados sobre o status de preparação. Este microserviço é essencial para garantir uma comunicação eficiente entre os clientes e os estabelecimentos parceiros.
 
 4. **Customer Service:**
-   Prove informações sobre os consumidores.
+   Serviço que disponibiliza serviços para o gerenciamento dos consumidores.
 
 5. **Kafka (Cluster):**
    O cluster Kafka é utilizado na comunicação assíncrona entre os microserviços através do padrão CQRS (Command Query Responsibility Segregation), separando as operações de leitura e escrita para melhorar o desempenho e escalabilidade do sistema.
@@ -41,8 +41,9 @@ Cada componente da arquitetura é projetado para desempenhar um papel específic
 - [Maven 3.9.x+](https://maven.apache.org/download.cgi)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Apache Kafka](https://kafka.apache.org/)
-- Docker (opcional)
-- Docker-Compose (opcional)
+- Docker
+- Docker-Compose
+- [Rancher Desktop](https://rancherdesktop.io/) or [Docker Desktop](https://www.docker.com/products/docker-desktop/) for Windows platform (optional)
 - [Postman](https://www.postman.com/) (opcional)
 - [GraphViz](https://graphviz.org/download/) (opcional)
 
@@ -152,10 +153,8 @@ O diretório raiz contém o projeto maven que age como container, agregando os p
 Os projetos dos microserviços também farão uso de uma estrutura de `sub-módulos` para separar as camadas arquiteturais, de acordo com o DDD, ao invés de utilizar a tradicional estrutura de diretórios/pacotes do java.
 
 ```
-├── common
-│   ├── common-application
-│   ├── common-dataaccess
-│   └── common-domain
+├── docs
+│   └── ...
 │
 ├── infrastructure
 │   ├── docker-compose
@@ -165,20 +164,10 @@ Os projetos dos microserviços também farão uso de uma estrutura de `sub-módu
 │       ├── kafka-model
 │       └── kafka-producer
 │
-├── order-service
-│   └── ...
-│
-├── payment-service
-│   └── ...
-│
-├── restaurant-service
-│   └── ...
-│
-├── customer-service
-│   └── ...
-│
-├── docs
-│   └── ...
+├── common
+│   ├── common-application
+│   ├── common-dataaccess
+│   └── common-domain
 │
 ├── order-service
 │   ├── order-application
@@ -194,13 +183,27 @@ Os projetos dos microserviços também farão uso de uma estrutura de `sub-módu
 │   │       └── ...
 │   └── order-messaging
 │       └── ...
-└── 
-    └── ...
+│
+├── payment-service
+│   └── ...
+│
+├── restaurant-service
+│   └── ...
+│
+├── customer-service
+│   └── ...
+│
+└── ...
 ```
 
 - **docs**
 Esta pasta contém todos os artefatos relacionados à documentação da solução. Imagens, arquivos de design, documentos, entre outros.
 Sua estrutura é livre e evolui conforme a necessidade.
+
+- **customer-service**
+Esta pasta/sub-módulo contém o projeto do microserviço `Customer Service` responsável pelo gerenciamento dos clientes que podem acessar a solução.
+
+Sua estrutura interna e detalhes sobre esse microserviço serão abordados [aqui](docs/customer-service-readme.md).
 
 - **order-service**
 Esta pasta/sub-módulo contém o projeto do microserviço `Order Service` que é o orchestrador SAGA responsável por receber e tratar os pedidos dos clientes.
@@ -232,7 +235,56 @@ O sub-módulo 'kafka' é um projeto que reune código e configurações comuns e
 
 ## Starting development environment
 
-**Step 1**: Instanciate kafka cluster on docker
+**Step 1**: Install Docker & Docker compose
+
+É obrigatório ter o docker e o docker-compose instalado e rodando na máquina local para a criação das imagens dos 4 serviços (Order, Payment, Restaurant e Customer) e para a criação do cluster kafka local.
+
+Em um prompt de comandos, execute os comandos e garanta que seja obtido retornos semelhantes:
+
+```
+$ docker --version
+Docker version 24.0.7-rd, build 72ffacf
+
+$ docker-compose --version
+Docker Compose version v2.23.3
+```
+
+**Step 2**: Install PostgreSQL
+
+Todos os microserviços dessa solução utilizam o PostgresSQL como gerenciador de banco de dados. Sendo assim, efetue uma instalação local.
+
+Caso já tenha o PostgreSQL instalado ou deseje utilizar uma conexão remota, efetue os ajustes necessários nos arquivos de configurações dos 4 serviços:
+- [application.yml](customer-service/customer-container/src/main/resources/application.yml) in **Customer Service**;
+- [application.yml](order-service/order-container/src/main/resources/application.yml) in **Order Service**;
+- [application.yml](payment-service/payment-container/src/main/resources/application.yml) in **Payment Service**; and
+- [application.yml](restaurant-service/restaurant-container/src/main/resources/application.yml) in **Restaurant Service**
+
+Abaixo está o trecho de configuração em cada um dos arquivos que poderá exigir ajustes:
+
+```
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=customer&binaryTransfer=true&reWriteBatchedInserts=true
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+```
+
+Em especial, as chaves `url`, `username` e `password` são as que mais provavelmente exiga ajustes.
+
+
+**Step 3**: Instanciate kafka cluster on docker
+
+Uma vez que o Docker e o Docker-Compose estão rodando localmente, basta executar os comandos abaixo:
 
 ```
 $ cd infrastructure/docker-compose
@@ -241,7 +293,10 @@ $ docker-compose -f common.yml -f kafka_cluster.yml up -d
 $ docker-compose -f common.yml -f init_kafka.yml up 
 ```
 
-**Step 2**: Configure CMAK
+OBS: O container `init-kafka` pode ser excluído. Isso porque sua função é a apenas criar os tópicos no kafka.
+
+
+**Step 4**: Configure CMAK
 
 - Acesse via browser o link [http://localhost:9000/](http://localhost:9000/) e adicione um novo cluster;<br>
 - No topo do site, acesse o menu **Cluster** e clique na opção **Add Cluster**;<br>
@@ -250,11 +305,48 @@ $ docker-compose -f common.yml -f init_kafka.yml up
 - Clique no botão **Save**, no da página e pronto;<br>
 - Volte para a página principal e verá que o nome do cluster adicionado será listado entre os clusters ativos;
 
-**Step 3**: Install PostgresSQL
+**Step 5**: Building
 
-Todos os microserviços dessa solução utilizam o PostgresSQL como gerenciador de banco de dados. Sendo assim, efetue uma instalação local ou ajustes as configurações nos arquivos de propriedade apontando para uma hostname e porta remota.
+Em um prompt de comandos, execute o comando abaixo no diretório raiz do projeto:
 
-OBS: Pode ser necessário atualizar uma ou mais configurações (application.yml) nos módulos `order-service`, `customer-service`, `payment-service` e `restaurant-service`.<br>
+```
+$ mvn clean install
+```
+
+Além de buildar e gerar os arquivos .jar de cada submódulo, também ser
+a geradp imagens docker de cada um dos microserviços. Isso é feito pelo plugin `spring-boot-maven-plugin`.
+
+Porém tenha a certeza de que o docker esteja rodando no momento.
+
+Também é possível apenas buildar e gerar os arquivos .jar, sem que os pacotes sejam instalados e as imagens docker geradas. Nesse caso, use:
+
+```
+$ mvn clean package
+```
+
+**Step 6.1**: Running the micro-services in IDE
+
+A execução dos microserviços pode ser realizada diretamente pela IDE de sua preferência, seja o Eclipse, InteliJ, VS Code, ou outra qualquer.
+
+Para isso execute o arquivo `*ServiceApplication.java` que está dentro do submódulo `*-container`, isto é:
+- [CustomerServiceApplication.java](customer-service/customer-container/src/main/java/com/food/ordering/system/customer/service/CustomerServiceApplication.java) para o Customer Service;
+- [OrderServiceApplication.java](order-service/order-container/src/main/java/com/food/ordering/system/order/service/domain/OrderServiceApplication.java) para o Order Service;
+- [PaymentServiceApplication.java](payment-service/payment-container/src/main/java/com/food/ordering/system/payment/service/domain/PaymentServiceApplication.java) para o Payment Service;
+- [RestaurantServiceApplication.java](restaurant-service/restaurant-container/src/main/java/com/food/ordering/system/restaurant/service/domain/RestaurantServiceApplication.java) para o Restaurant Service;
+
+**Step 6.2**: Running the micro-services in command line
+
+A execução dos microserviços também pode ser realizada diretamente em linha de comando:
+
+```
+$ java -jar customer-service/customer-container/target/customer-container-1.0-SNAPSHOT.jar
+
+$ java -jar order-service/order-container/target/order-container-1.0-SNAPSHOT.jar
+
+$ java -jar payment-service/payment-container/target/payment-container-1.0-SNAPSHOT.jar
+
+$ java -jar restaurant-service/restaurant-container/target/restaurant-container-1.0-SNAPSHOT.jar
+```
 
 
 ## Using GraphViz
@@ -270,4 +362,5 @@ O comando acima irá gerar uma imagem semelhante à essa:
 ## Using Postman as HTTP client
 
 A pasta `/docs/postman/` contém uma collection com requisições REST pré-configuradas que podem ser usadas para facilitar as atividades de desenvolvimento e teste.
+
 

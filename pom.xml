@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version>
+        <version>3.2.2</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
@@ -28,8 +28,8 @@
 
     <properties>
         <java.version>17</java.version>
-        <mockito.version>5.7.0</mockito.version>
-        <spring-kafka.version>3.1.0</spring-kafka.version>
+        <mockito.version>5.10.0</mockito.version>
+        <spring-kafka.version>3.1.1</spring-kafka.version>
         <kafka-avro-serializer.version>7.5.1</kafka-avro-serializer.version>
         <avro.version>1.11.3</avro.version>
     </properties>

@@ -5,7 +5,6 @@ import java.util.function.BiConsumer;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,22 +32,16 @@ public class KafkaMessageHelper {
         }
     }
 
-    public <T, U> ListenableFutureCallback<SendResult<String, T>>
+    public <T, U> BiConsumer<SendResult<String, T>, Throwable>
     getKafkaCallback(String responseTopicName, T avroModel, U outboxMessage,
                      BiConsumer<U, OutboxStatus> outboxCallback,
                      String orderId, String avroModelName) {
-        return new ListenableFutureCallback<>() {
-            @Override
-            public void onFailure(Throwable ex) {
-                log.error("Error while sending {} with message: {} and outbox type: {} to topic {}",
-                        avroModelName, avroModel.toString(), outboxMessage.getClass().getName(), responseTopicName, ex);
-                outboxCallback.accept(outboxMessage, OutboxStatus.FAILED);
-            }
-
-            @Override
-            public void onSuccess(SendResult<String, T> result) {
+        
+        return (result, ex) -> {
+            
+            if (ex == null) {
                 RecordMetadata metadata = result.getRecordMetadata();
-
+    
                 log.info("Received successful response from Kafka for order id: {}" +
                                 " Topic: {} Partition: {} Offset: {} Timestamp: {}",
                         orderId,
@@ -57,7 +50,12 @@ public class KafkaMessageHelper {
                         metadata.offset(),
                         metadata.timestamp());
                 outboxCallback.accept(outboxMessage, OutboxStatus.COMPLETED);
+            } else {
+                log.error("Error while sending {} with message: {} and outbox type: {} to topic {}",
+                        avroModelName, avroModel.toString(), outboxMessage.getClass().getName(), responseTopicName, ex);
+                outboxCallback.accept(outboxMessage, OutboxStatus.FAILED);
             }
         };
+
     }
 }

@@ -1,14 +1,14 @@
 package com.food.ordering.system.kafka.producer.service.impl;
 
 import java.io.Serializable;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 import org.apache.avro.specific.SpecificRecordBase;
 import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import com.food.ordering.system.kafka.producer.exception.KafkaProducerException;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
@@ -27,13 +27,12 @@ public class KafkaProducerImpl<K extends Serializable, V extends SpecificRecordB
     }
 
     @Override
-    public void send(String topicName, K key, V message, ListenableFutureCallback<SendResult<K, V>> callback) {
+    public void send(String topicName, K key, V message, BiConsumer<SendResult<K, V>, Throwable> callback) {
         log.info("Sending message={} to topic={}", message, topicName);
         try {
-            @SuppressWarnings("unchecked")
-            final ListenableFuture<SendResult<K, V>> kafkaResultFuture = (ListenableFuture<SendResult<K, V>>) kafkaTemplate.send(topicName, key,
-                    message);
-            kafkaResultFuture.addCallback(callback);
+            final CompletableFuture<SendResult<K, V>> kafkaResultFuture = kafkaTemplate.send(topicName, key, message);
+
+            kafkaResultFuture.whenComplete(callback);
         } catch (final KafkaException e) {
             log.error("Error on kafka producer with key: {}, message: {} and exception: {}", key, message, e.getMessage());
             throw new KafkaProducerException("Error on kafka producer with key: " + key + " and message: " + message);
